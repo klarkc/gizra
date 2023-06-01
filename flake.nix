@@ -63,14 +63,60 @@
               ln -s ${node_modules}/node_modules node_modules
             '';
           });
+          concurrent = pkgs.writeShellApplication {
+            name = "concurrent";
+            runtimeInputs = with pkgs; [
+              concurrently
+            ];
+            text = ''
+              concurrently\
+                --color "auto"\
+                --prefix "[{command}]"\
+                --handle-input\
+                --restart-tries 10\
+                "$@"
+            '';
+          };
+          tailwind = pkgs.writeShellApplication {
+            name = "tailwind";
+            runtimeInputs = with pkgs; [ nodejs ];
+            text = ''npx tailwind "$@"'';
+          };
+          tailwind-watch = pkgs.writeShellApplication {
+            name = "tailwind-watch";
+            runtimeInputs = [ tailwind ];
+            text = ''tailwind -c tailwind/tailwind.config.js -i ./tailwind/app.css -o static/app.css --watch "$@"'';
+          };
+          dev = (pkgs.writeShellApplication {
+            name = "dev";
+            runtimeInputs = with pkgs; gizra.buildInputs ++ [
+              concurrent
+              tailwind-watch
+            ];
+            text = ''
+              concurrent \
+                "tailwind-watch"\
+                RunDevServer
+            '';
+          });
         in
         # Flake definition must follow gizra.cabal
         {
           packages.default = gizra;
           devShells.default = pkgs.mkShell {
+            packages = [
+              dev
+              gizra
+            ];
             inputsFrom = [
               gizra
             ];
+            shellHook = ''
+              alias echol='printf "\033[1;32m%s\033[0m\n" "$@"'
+              alias echoi='printf "\033[1;34m[INFO] %s\033[0m\n" "$@"'
+              echol "Welcome to gizra shell."
+              echoi "Available commands: dev."
+            '';
           };
           checks.output = pkgs.runCommand "gizra-output" { }
             ''
