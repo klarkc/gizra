@@ -1,36 +1,80 @@
 {
-  inputs.horizon-platform.url = "git+https://gitlab.homotopic.tech/horizon/horizon-platform";
-  inputs.nixpkgs.follows = "horizon-platform/nixpkgs";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
   inputs.utils.url = "github:ursi/flake-utils";
+  inputs.ihp.url = "github:digitallyinduced/ihp";
+  inputs.ihp.flake = false;
+  inputs.npmlock2nix.url = "github:nix-community/npmlock2nix";
+  inputs.npmlock2nix.flake = false;
 
-  outputs = { self, utils, ... }@inputs:
+  outputs = { self, utils, ihp, ... }@inputs:
+    let
+      compiler = "ghc944";
+      mkGhcCompiler = import "${ihp}/NixSupport/mkGhcCompiler.nix";
+    in
     utils.apply-systems
       {
         inherit inputs;
-        # TODO support additional systems on hor
-        #  horizon-platform is only supporting linux
-        systems = [ "x86_64-linux" ];
+        # adapt IHP NixSupport/make-nixpkgs-from-options.nix to flake
+        make-pkgs = (system: import inputs.nixpkgs {
+          inherit system;
+          config = {
+            packageOverrides = pkgs: rec {
+              haskell = pkgs.haskell // {
+                packages = pkgs.haskell.packages // {
+                  "${compiler}" = mkGhcCompiler {
+                    inherit pkgs ihp;
+                    ghcCompiler = pkgs.haskell.packages.${compiler};
+                  };
+                };
+              };
+            };
+          };
+        });
       }
       ({ pkgs, system, ... }:
         let
-          hsPkgs =
-            with pkgs.haskell.lib;
-            inputs.horizon-platform.legacyPackages.${system}.extend (hfinal: hprev:
-              {
-                hor = disableLibraryProfiling (hprev.callCabal2nix "hor" ./. { });
-              });
-        in
-        # Flake definition must follow hor.cabal
-        {
-          packages.default = hsPkgs.hor;
-          devShells.default = hsPkgs.hor.env.overrideAttrs (attrs: {
-            buildInputs = with pkgs; attrs.buildInputs ++ [
+          projectPath = ./.;
+          ihp-nix = import "${ihp}/NixSupport";
+          npmlock2nix = import inputs.npmlock2nix {
+            inherit pkgs;
+          };
+          node_modules = npmlock2nix.v2.node_modules {
+            src = projectPath;
+            nodejs = pkgs.nodejs;
+          };
+          gizra = (ihp-nix {
+            inherit ihp projectPath pkgs compiler;
+            haskellDeps = p: with p; [
               cabal-install
+              base
+              wai
+              text
+              hlint
+              p.ihp
             ];
+            otherDeps = p: with p; [
+              # Native dependencies, e.g. imagemagick
+              imagemagick
+              nodejs
+            ];
+          }).overrideAttrs (attrs: {
+            # install npm packages
+            postConfigure = ''
+              ln -s ${node_modules}/node_modules node_modules
+            '';
           });
-          checks.output = pkgs.runCommand "hor-output" { }
+        in
+        # Flake definition must follow gizra.cabal
+        {
+          packages.default = gizra;
+          devShells.default = pkgs.mkShell {
+            inputsFrom = [
+              gizra
+            ];
+          };
+          checks.output = pkgs.runCommand "gizra-output" { }
             ''
-              echo ${hsPkgs.hor} > $out
+              echo ${gizra} > $out
             '';
         });
 
@@ -41,17 +85,13 @@
     # but remove it here if you do not want it to.
     extra-substituters = [
       "https://klarkc.cachix.org?priority=99"
-      "https://cache.iog.io"
-      "https://cache.zw3rk.com"
       "https://cache.nixos.org"
-      "https://hercules-ci.cachix.org"
+      "https://digitallyinduced.cachix.org"
     ];
     extra-trusted-public-keys = [
       "klarkc.cachix.org-1:R+z+m4Cq0hMgfZ7AQ42WRpGuHJumLLx3k0XhwpNFq9U="
-      "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
-      "loony-tools:pr9m4BkM/5/eSTZlkQyRt57Jz7OMBxNSUiMC4FkcNfk="
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-      "hercules-ci.cachix.org-1:ZZeDl9Va+xe9j+KqdzoBZMFJHVQ42Uu/c/1/KMC5Lw0="
+      "digitallyinduced.cachix.org-1:y+wQvrnxQ+PdEsCt91rmvv39qRCYzEgGQaldK26hCKE="
     ];
     allow-import-from-derivation = "true";
   };

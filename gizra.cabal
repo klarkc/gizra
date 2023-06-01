@@ -1,0 +1,52 @@
+cabal-version: 3.6
+
+name: gizra
+version: 1.0.0.2
+
+executable gizra
+  hs-source-dirs: .
+  main-is: Main.hs
+  default-language: Haskell2010
+  default-extensions:
+    OverloadedStrings
+    , NoImplicitPrelude
+    , ImplicitParams
+    , Rank2Types
+    , DisambiguateRecordFields
+    , NamedFieldPuns
+    , DuplicateRecordFields
+    , OverloadedLabels
+    , FlexibleContexts
+    , TypeSynonymInstances
+    , FlexibleInstances
+    , QuasiQuotes
+    , TypeFamilies
+    , PackageImports
+    , ScopedTypeVariables
+    , RecordWildCards
+    , TypeApplications
+    , DataKinds
+    , InstanceSigs
+    , DeriveGeneric
+    , MultiParamTypeClasses
+    , TypeOperators
+    , DeriveDataTypeable
+    , MultiWayIf
+    , UndecidableInstances
+    , BlockArguments
+    , PartialTypeSignatures
+    , LambdaCase
+    , DefaultSignatures
+    , EmptyDataDeriving
+    , BangPatterns
+    , BlockArguments
+    , MultiWayIf
+    , FunctionalDependencies
+    , PartialTypeSignatures
+    , StandaloneDeriving
+    , DerivingVia
+  build-depends: 
+    ihp,
+    base,
+    wai,
+    text
