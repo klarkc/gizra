@@ -1,7 +1,7 @@
 $(document).on('ready turbolinks:load', () => {
 
     // Init sortable.
-    document.querySelectorAll('.js-sortable').forEach(function (elem) {
+    document.querySelectorAll('.js-sortable').forEach(function(elem) {
         if (Boolean(elem.jsSortableInitialized) === false) {
             Sortable.create(elem, {
                 handle: '.sortable-handle',
@@ -9,5 +9,10 @@ $(document).on('ready turbolinks:load', () => {
             });
             elem.jsSortableInitialized = true;
         }
+    });
+
+    // Init tinymce
+    tinymce.init({
+        selector: '.wysiwyg', 
     });
 });

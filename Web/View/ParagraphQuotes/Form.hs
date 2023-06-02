@@ -3,6 +3,7 @@ module Web.View.ParagraphQuotes.Form where
 import Web.View.Prelude
 import Web.Element.Types
 import Web.Element.ElementWrap
+import Web.Element.Form (textareaWysiwygField)
 
 renderForm :: ParagraphQuote -> Bool -> Html
 renderForm paragraphQuote isImageRequired = formFor paragraphQuote [hsx|
@@ -14,7 +15,7 @@ renderForm paragraphQuote isImageRequired = formFor paragraphQuote [hsx|
             visibleForm :: (?formContext :: FormContext ParagraphQuote) => ParagraphQuote -> Html
             visibleForm paragraphQuote =
                 [hsx|
-                    {(textareaField #body) {required = True}}
+                    {(textareaWysiwygField #body) {required = True}}
                     {(textField #subtitle) {required = True}}
 
                     <div class="flex flex-row">
