@@ -13,6 +13,11 @@ $(document).on('ready turbolinks:load', () => {
 
     // Init tinymce
     tinymce.init({
-        selector: '.wysiwyg', 
+        selector: '.wysiwyg',
+        setup: function(editor) {
+            editor.on('change', function() {
+                tinymce.triggerSave();
+            });
+        }
     });
 });
