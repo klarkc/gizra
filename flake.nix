@@ -94,6 +94,7 @@
               tailwind-watch
             ];
             text = ''
+              make all
               concurrent \
                 "tailwind-watch"\
                 RunDevServer
