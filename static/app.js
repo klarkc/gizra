@@ -1,4 +1,4 @@
-$(document).on('ready turbolinks:load', () => {
+document.addEventListener('DOMContentLoaded', () => {
 
     // Init sortable.
     document.querySelectorAll('.js-sortable').forEach(function(elem) {
