@@ -4,6 +4,7 @@ module Web.View.Prelude
 , module Generated.Types
 , module Web.Types
 , module Application.Helper.View
+, sanitizeHtml
 ) where
 
 import IHP.ViewPrelude
@@ -12,4 +13,7 @@ import Generated.Types
 import Web.Types
 import Web.Routes ()
 import Application.Helper.View
+import Text.HTML.SanitizeXSS (sanitize)
 
+sanitizeHtml :: Text -> Text
+sanitizeHtml = sanitize

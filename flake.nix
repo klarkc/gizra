@@ -50,6 +50,7 @@
               wai
               text
               hlint
+              xss-sanitize
               p.ihp
             ];
             otherDeps = p: with p; [

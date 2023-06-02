@@ -49,4 +49,5 @@ executable gizra
     ihp,
     base,
     wai,
-    text
+    text,
+    xss-sanitize
