@@ -80,7 +80,7 @@
           tailwind = pkgs.writeShellApplication {
             name = "tailwind";
             runtimeInputs = with pkgs; [ nodejs ];
-            text = ''npx tailwind "$@"'';
+            text = ''npx tailwindcss "$@"'';
           };
           tailwind-watch = pkgs.writeShellApplication {
             name = "tailwind-watch";
@@ -95,6 +95,7 @@
             ];
             text = ''
               make all
+              npm install --no-save
               concurrent \
                 "tailwind-watch"\
                 RunDevServer
