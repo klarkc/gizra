@@ -87,15 +87,23 @@
             runtimeInputs = [ tailwind ];
             text = ''tailwind -c tailwind/tailwind.config.js -i ./tailwind/app.css -o static/app.css --watch "$@"'';
           };
+          make = pkgs.writeShellApplication {
+            name = "make";
+            runtimeInputs = with pkgs; gizra.buildInputs ++ [ nodejs ];
+            text = ''
+              make all
+              npm install --no-save
+            '';
+          };
           dev = (pkgs.writeShellApplication {
             name = "dev";
             runtimeInputs = with pkgs; gizra.buildInputs ++ [
               concurrent
               tailwind-watch
+              make
             ];
             text = ''
-              make all
-              npm install --no-save
+              make
               concurrent \
                 "tailwind-watch"\
                 RunDevServer
