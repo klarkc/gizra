@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Init tinymce
     tinymce.init({
         selector: '.wysiwyg',
+        plugins: 'code',
+        toolbar: 'code',
         setup: function(editor) {
             editor.on('change', function() {
                 tinymce.triggerSave();
