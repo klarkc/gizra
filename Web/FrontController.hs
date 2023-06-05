@@ -7,6 +7,7 @@ import Web.View.Layout (defaultLayout)
 -- Controller Imports
 import Web.Controller.ImageStyle
 import Web.Controller.LandingPages
+import Web.Controller.StyleGuide
 import Web.Controller.ParagraphCtas
 import Web.Controller.ParagraphQuotes
 
@@ -16,6 +17,7 @@ instance FrontController WebApplication where
         -- Generator Marker
         , parseRoute @ImageStyleController
         , parseRoute @LandingPagesController
+        , parseRoute @StyleGuideController
         , parseRoute @ParagraphCtasController
         , parseRoute @ParagraphQuotesController
         ]
