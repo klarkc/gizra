@@ -3,9 +3,8 @@ cabal-version: 3.6
 name: gizra
 version: 1.0.0.2
 
-executable gizra
+common settings
   hs-source-dirs: .
-  main-is: Main.hs
   default-language: Haskell2010
   default-extensions:
     OverloadedStrings
@@ -45,8 +44,13 @@ executable gizra
     , PartialTypeSignatures
     , StandaloneDeriving
     , DerivingVia
+
+executable gizra
+  import: settings
+  main-is: Main.hs
   build-depends: 
     ihp,
     base,
     wai,
-    text
+    text,
+    xss-sanitize

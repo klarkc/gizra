@@ -36,6 +36,7 @@ renderParagraph body subtitle imageUrl =
 
         |]
         bodyWrapped = body
+            |> sanitizeHtml
             |> preEscapedToHtml
             |> wrapTextResponsiveFontSize TextSize2xl
 

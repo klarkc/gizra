@@ -44,13 +44,11 @@ scripts = [hsx|
         <script src={assetPath "/vendor/jquery-3.6.0.slim.min.js"}></script>
         <script src={assetPath "/vendor/timeago.js"}></script>
         <script src={assetPath "/vendor/flatpickr.js"}></script>
-        <script src={assetPath "/vendor/morphdom-umd.min.js"}></script>
-        <script src={assetPath "/vendor/turbolinks.js"}></script>
-        <script src={assetPath "/vendor/turbolinksInstantClick.js"}></script>
-        <script src={assetPath "/vendor/turbolinksMorphdom.js"}></script>
         <!-- jsDelivr :: Sortable :: Latest (https://www.jsdelivr.com/package/npm/sortablejs) -->
         <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
-        <script src={assetPath "/helpers.js"}></script>
+        <!-- jsDelivr :: TinyMCE :: Latest (https://www.jsdelivr.com/package/npm/tinymce) -->
+        <script src="//cdn.jsdelivr.net/npm/tinymce@6.4.2/tinymce.min.js"></script>
+        <link href="//cdn.jsdelivr.net/npm/tinymce@6.4.2/skins/ui/oxide/content.min.css" rel="stylesheet">
         <script src={assetPath "/ihp-auto-refresh.js"}></script>
         <script src={assetPath "/app.js"}></script>
     |]

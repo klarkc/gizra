@@ -11,3 +11,9 @@
 nix develop
 dev
 ```
+## Tests
+
+```bash
+nix develop
+tests
+```

@@ -50,6 +50,8 @@
               wai
               text
               hlint
+              xss-sanitize
+              hspec
               p.ihp
             ];
             otherDeps = p: with p; [
@@ -95,7 +97,7 @@
               npm install --no-save
             '';
           };
-          dev = (pkgs.writeShellApplication {
+          dev = pkgs.writeShellApplication {
             name = "dev";
             runtimeInputs = with pkgs; gizra.buildInputs ++ [
               concurrent
@@ -107,7 +109,12 @@
                 "tailwind-watch"\
                 RunDevServer
             '';
-          });
+          };
+          tests = pkgs.writeShellScriptBin "tests"
+            ''
+              ${make}/bin/make
+              ghci -ghci-script .ghci $(find tests -name "*.hs") -e "Main.main" -e ":q"
+            '';
         in
         # Flake definition must follow gizra.cabal
         {
@@ -115,6 +122,7 @@
           devShells.default = pkgs.mkShell {
             packages = [
               dev
+              tests
             ];
             inputsFrom = [
               gizra
@@ -123,12 +131,13 @@
               alias echol='printf "\033[1;32m%s\033[0m\n" "$@"'
               alias echoi='printf "\033[1;34m[INFO] %s\033[0m\n" "$@"'
               echol "Welcome to gizra shell."
-              echoi "Available commands: dev."
+              echoi "Available commands: dev, tests."
             '';
           };
-          checks.output = pkgs.runCommand "gizra-output" { }
+          checks.tests = pkgs.runCommand "gizra-test" { }
             ''
-              echo ${gizra} > $out
+              ${tests}/bin/tests
+              touch $out
             '';
         });
 
