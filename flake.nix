@@ -112,6 +112,7 @@
           };
           tests = pkgs.writeShellScriptBin "tests"
             ''
+              ${make}/bin/make
               ghci -ghci-script .ghci $(find tests -name "*.hs") -e "Main.main" -e ":q"
             '';
         in
