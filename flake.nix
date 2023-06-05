@@ -100,10 +100,9 @@
             runtimeInputs = with pkgs; gizra.buildInputs ++ [
               concurrent
               tailwind-watch
-              make
             ];
             text = ''
-              make
+              ${make}/bin/make
               concurrent \
                 "tailwind-watch"\
                 RunDevServer
