@@ -115,7 +115,6 @@
           devShells.default = pkgs.mkShell {
             packages = [
               dev
-              gizra
             ];
             inputsFrom = [
               gizra
