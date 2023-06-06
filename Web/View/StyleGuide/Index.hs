@@ -21,7 +21,7 @@ instance View IndexView where
       |> wrapContainerWide
     where
       header =
-        [ [hsx|StyleGuide Index|] |> wrapHeaderTag 1
+        [ cs @String "StyleGuide Index" |> wrapHeaderTag 1
         ]
           |> mconcat
           |> wrapHorizontalSpacing AlignNone
