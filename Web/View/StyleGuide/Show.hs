@@ -42,7 +42,7 @@ renderPerson person =
   [hsx|
     <div class="rounded-lg shadow">
         <div class="flex flex-col items-center space-y-8">
-            <div class="rounded-full overflow-hidden mt-8 mx-8" style="max-width: 128px; max-height: 128px;">
+            <div class="rounded-full overflow-hidden mt-8 mx-8 max-w-[128px] max-h-[128px]">
                 <img src={person.avatar} alt={person.name}>
             </div> 
             <div class="text-center space-y-2 text-gray-900">
