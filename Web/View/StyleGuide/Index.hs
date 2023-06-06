@@ -27,11 +27,13 @@ instance View IndexView where
           |> wrapHorizontalSpacing AlignNone
 
       body =
-        [hsx|
-          <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {forEach persons renderPerson}
-          </div>
-        |]
+        wrapVerticalSpacing
+          AlignCenter
+          [hsx|
+            <div class="grid gap-8 self-stretch md:grid-cols-2 lg:grid-cols-3">
+              {forEach persons renderPerson}
+            </div>
+          |]
 
       breadcrumb =
         renderBreadcrumb
