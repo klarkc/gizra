@@ -54,7 +54,7 @@ data LandingPagesController
 data ImageStyleController = RenderImageStyleAction {width :: !Int, height :: !Int, originalImagePath :: !Text}
   deriving (Eq, Show, Data)
 
-data StyleGuideController = ShowPersonAction
+data StyleGuideController = StyleGuideAction | ShowPersonAction
   deriving (Eq, Show, Data)
 
 data Person = Person

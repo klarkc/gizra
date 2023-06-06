@@ -20,7 +20,7 @@ instance View ShowView where
     where
       breadcrumb =
         renderBreadcrumb
-          [ breadcrumbText "StyleGuide",
+          [ breadcrumbLink "StyleGuide" StyleGuideAction,
             breadcrumbText "Show Person"
           ]
 
