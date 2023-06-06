@@ -26,9 +26,9 @@ instance View ShowView where
 
       header =
         [hsx|
-                    {breadcrumb}
-                    {name}
-                |]
+          {breadcrumb}
+          {name}
+        |]
           |> wrapVerticalSpacing AlignNone
           |> wrapContainerWide
 
